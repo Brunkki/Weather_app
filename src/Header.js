@@ -10,10 +10,26 @@ const theme = createTheme({
     }
 })
 
+const useStyles = makeStyles(() => ({
+    header: {
+        display: 'flex',
+        fontSize: 50, 
+        textTransform: 'uppercase',
+        backgroundColor: '#00bbff',
+        color: 'white',
+        alignItems: 'center',
+        justifyContent: 'center',
+        padding: 20,
+    }
+}))
+
+
 const Header = () => {
+    const classes = useStyles()
+
     return (
         <ThemeProvider theme={theme}>
-            <Typography> Weather </Typography>
+            <Typography className={classes.header}> Weather </Typography>
         </ThemeProvider>
     )
 }
