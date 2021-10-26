@@ -1,7 +1,7 @@
 import React, { useState, useEffect }from 'react'
 import { makeStyles } from '@material-ui/core'
 import { getForeCast } from './request'
-import { formatTime } from './utils/formatTime'
+import { formatTime, formatDay } from './utils/formatTime'
 import WeatherCard from './WeatherCard'
 
 const useStyles = makeStyles(() => ({
@@ -17,6 +17,13 @@ const useStyles = makeStyles(() => ({
         display: 'flex',
         flexDirection: 'row',
         flexWrap: 'wrap'
+    },
+    weatherSelected: {
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        fontSize: '32px',
+        padding: 30
     }
 }))
 const Weather = () => {
@@ -39,6 +46,10 @@ const Weather = () => {
 
     const selectedForecasts = forecasts.list.find(f => f.dt === focusedForecastDT)
 
+    const changeFocusedForecast = (forecast) => {
+        setFocusedForecastDT(forecast.dt)
+    }
+
     const renderWeatherItem = (forecast) => {
         return (
             <div style={{ padding: 10 }} key={forecast.dt}>
@@ -58,6 +69,13 @@ const Weather = () => {
         <div className={classes.center}>
             Auringon lasku klo {formatTime (forecasts.city.sunset)}
         </div>
+    </div>
+    <div className={classes.weatherSelected}>
+        <div> {formatDay(selectedForecasts.dt)} </div>
+        <div> {formatTime(selectedForecasts.dt)} </div>
+        <div> {Math.round(selectedForecasts.main.temp)}° </div>
+        <div> {selectedForecasts.weather[0].description} </div>
+        <img src={`http://openweathermap.org/img/wn/${selectedForecasts.weather[0].icon}.png`} alt='Logo' />
     </div>
     <div className={classes.row}>
         {forecasts.list.map(forecast => renderWeatherItem(forecast))}
